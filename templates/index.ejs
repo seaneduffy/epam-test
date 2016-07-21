@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<link type="text/css" rel="stylesheet" href="/main.css">
+<script src="/main.js"></script>
+</head>
+<body ng-app="blog" ng-controller="main">
+	<span class="modal" ng-show="error || deleting || editing"></span>
+	<div id="container">
+		<header>My Awesome Blog</header>
+		<ul id="posts">
+			<li ng-repeat="post in posts">
+				<div class="content" ng-hide="post.editing">
+					<h1>{{post.title}}</h1>
+					<div class="body">
+						<p ng-repeat="paragraph in post.bodyDisplay">{{paragraph}}</p>
+					</div>
+				</div>
+				<div class="input" ng-show="post.editing">
+					<textarea class="title" ng-model="savedPost.title">{{post.title}}</textarea>
+					<textarea class="body" ng-model="savedPost.body">{{post.body}}</textarea>
+				</div>
+				<div class="controls">
+					<div>
+						<button class="editpost" ng-hide="post.editing" ng-click="editPost($index)">Edit</button>
+						<button class="editpost" ng-show="post.editing" ng-click="confirmEditPost($index)">Done Editing</button>
+						<button class="delete" ng-click="confirmDeletePost($index)">Delete</button>
+					</div>
+					<div>
+						<button class="showcomments" ng-click="hideComments($index)" ng-show="post.showComments">Hide Comments</button>
+						<button class="showcomments" ng-click="showComments($index)" ng-hide="post.showComments">Show Comments</button>
+					</div>
+				</div>
+				<div class="comments" ng-show="post.showComments">
+					<ul>
+						<li ng-repeat="comment in post.comments">
+							<h2><a href="mailto:{{ comment.email }}">{{ comment.name }}</a></h2>
+							<p>{{ comment.body }}</p>
+						</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+		<div class="dialog" ng-show="error">
+			<div>
+				<p>{{error}}</p>
+				<div>
+					<button ng-click="error=false">OK</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog" ng-show="deleting">
+			<div>
+				<p>'{{posts[deleteIndex].title}}' has been deleted</p>
+				<div>
+					<button ng-click="finishDeletePost(deleteIndex); deleting=false">OK</button>
+					<button ng-click="deleting=false; posts[deleteIndex].editing=false">Undo</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog" ng-show="editing">
+			<div>
+				<p>'{{posts[editIndex].title}}' has been edited</p>
+				<div>
+					<button ng-click="finishEditPost(editIndex); editing=false">OK</button>
+					<button ng-click="editing=false; posts[editIndex].editing=false">Undo</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
