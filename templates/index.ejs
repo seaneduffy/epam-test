@@ -7,7 +7,34 @@
 <script src="/main.js"></script>
 </head>
 <body ng-app="blog" ng-controller="main">
-	<span class="modal" ng-show="error || deleting || editing"></span>
+	<span class="modal" ng-show="error || deleting || editing">
+		<div class="dialog" ng-show="error">
+			<div>
+				<p>{{error}}</p>
+				<div>
+					<button ng-click="error=false">OK</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog" ng-show="deleting">
+			<div>
+				<p>'{{posts[deleteIndex].title}}' has been deleted</p>
+				<div>
+					<button ng-click="finishDeletePost(deleteIndex); deleting=false">OK</button>
+					<button ng-click="deleting=false; posts[deleteIndex].editing=false">Undo</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialog" ng-show="editing">
+			<div>
+				<p>'{{posts[editIndex].title}}' has been edited</p>
+				<div>
+					<button ng-click="finishEditPost(editIndex); editing=false">OK</button>
+					<button ng-click="editing=false; posts[editIndex].editing=false">Undo</button>
+				</div>
+			</div>
+		</div>
+	</span>
 	<div id="container">
 		<header>My Awesome Blog</header>
 		<ul id="posts">
@@ -43,32 +70,6 @@
 				</div>
 			</li>
 		</ul>
-		<div class="dialog" ng-show="error">
-			<div>
-				<p>{{error}}</p>
-				<div>
-					<button ng-click="error=false">OK</button>
-				</div>
-			</div>
-		</div>
-		<div class="dialog" ng-show="deleting">
-			<div>
-				<p>'{{posts[deleteIndex].title}}' has been deleted</p>
-				<div>
-					<button ng-click="finishDeletePost(deleteIndex); deleting=false">OK</button>
-					<button ng-click="deleting=false; posts[deleteIndex].editing=false">Undo</button>
-				</div>
-			</div>
-		</div>
-		<div class="dialog" ng-show="editing">
-			<div>
-				<p>'{{posts[editIndex].title}}' has been edited</p>
-				<div>
-					<button ng-click="finishEditPost(editIndex); editing=false">OK</button>
-					<button ng-click="editing=false; posts[editIndex].editing=false">Undo</button>
-				</div>
-			</div>
-		</div>
 	</div>
 </body>
 </html>
